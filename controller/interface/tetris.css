@@ -167,7 +167,7 @@ body, table, input {
 	|
 	---
 */
-#tetris	.block1	{ background: #32a4fa; }
+#tetris	.block1	{ background: #38C44F; }
 
 /*
 	  |
@@ -181,30 +181,29 @@ body, table, input {
 	--
    --
 */
-#tetris	.block2	{ background: #FFAC1C; }
+#tetris	.block2	{ background: #38C44F; }
 
 /*
 	--
 	 --
 */
-#tetris	.block3	{ background: #FF6600; }
+#tetris	.block3	{ background: #38C44F; }
 
 /*
 	|
    ---
 */
-#tetris	.block4	{ background: #CC54C4; }
+#tetris	.block4	{ background: #38C44F; }
 
 /*
 	--
 	--
 */
-#tetris	.block5	{ background: #999;	}
-
+#tetris	.block5	{ background: #38C44F; }
 /*
 	----
 */
-#tetris	.block6	{ background: #FF0000; }
+#tetris	.block6	{ background: #38C44F; }
 
 
 /*** window	***/
