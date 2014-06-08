@@ -117,7 +117,7 @@ class Context
           cb(err, data) if cb
 
           container.wait () ->
-            container.remove()
+            container.remove () ->
 
   wait_for_container: (container) ->
 
