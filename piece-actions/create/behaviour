@@ -1,0 +1,25 @@
+#!/bin/sh
+
+PIECE=$1
+GAME=$2
+
+# which type? [0-6]
+TYPE=$(((RANDOM % 7 ) + 1))
+
+# initial position
+
+
+# compare position with existing blocks
+
+# create blocks
+
+
+# timer?
+
+redis-cli -h $PIECE_PORT_6379_TCP_ADDR set game $GAME
+redis-cli -h $PIECE_PORT_6379_TCP_ADDR set type $TYPE
+
+redis-cli -h $EVENTS_PORT_6379_TCP_ADDR publish docktris {\"event\":\"new-block\",\"data\":\[\"$PIECE\",\"green\",\"0,3\"\]}
+redis-cli -h $EVENTS_PORT_6379_TCP_ADDR publish docktris {\"event\":\"new-block\",\"data\":\[\"$PIECE\",\"green\",\"0,4\"\]}
+redis-cli -h $EVENTS_PORT_6379_TCP_ADDR publish docktris {\"event\":\"new-block\",\"data\":\[\"$PIECE\",\"green\",\"0,5\"\]}
+redis-cli -h $EVENTS_PORT_6379_TCP_ADDR publish docktris {\"event\":\"new-block\",\"data\":\[\"$PIECE\",\"green\",\"0,6\"\]}

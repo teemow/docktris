@@ -1,5 +1,23 @@
 {
-  "start": ["events", "block", "block-create"],
+  "start": {
+    "context": "game",
+    "action": "game-create",
+    "events": {
+      "new-piece": {
+        "context": "piece",
+        "action": "piece-create",
+        "events": {
+          "new-block": {
+            "context": "block",
+            "action": "block-create"
+          },
+          "left": {
+            "action": "piece-left"
+          }
+        }
+      }
+    }
+  },
   "left": ["piece-left"],
   "right": ["piece-right"],
   "down": ["piece-down"],
