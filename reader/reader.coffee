@@ -18,4 +18,6 @@ client.keys "*", (err, replies) ->
           data: read
 
         events.publish "docktris", "#{JSON.stringify(payload)}"
+        client.end()
+        events.end()
 
