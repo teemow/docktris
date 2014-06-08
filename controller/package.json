@@ -10,6 +10,7 @@
     "express": "*",
     "async": "*",
     "body-parser": "*",
-    "method-override": "*"
+    "method-override": "*",
+    "socket.io": "^1.0.4"
   }
 }

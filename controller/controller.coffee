@@ -1,7 +1,8 @@
 fs = require "fs"
-express = require "express"
 async = require "async"
-http = require "http"
+app = require("express")()
+http = require('http').Server app
+io = require('socket.io')(http)
 bodyParser = require "body-parser"
 redis = require "redis"
 util = require 'util'
@@ -13,10 +14,26 @@ docker = new Docker socketPath: '/var/run/docker.sock'
 
 events = JSON.parse(fs.readFileSync "events.json")
 
-
-app = express()
-
 app.use bodyParser()
+
+app.get '/', (req, res) ->
+  res.sendfile "./interface/tetris.html"
+app.get '/tetris.js', (req, res) ->
+  res.sendfile "./interface/tetris.js"
+app.get '/tetris.css', (req, res) ->
+  res.sendfile "./interface/tetris.css"
+app.get '/tetris.ico', (req, res) ->
+  res.sendfile "./interface/tetris.ico"
+app.get '/key-down.gif', (req, res) ->
+  res.sendfile "./interface/key-down.gif"
+app.get '/key-left.gif', (req, res) ->
+  res.sendfile "./interface/key-left.gif"
+app.get '/key-right.gif', (req, res) ->
+  res.sendfile "./interface/key-right.gif"
+app.get '/key-space.gif', (req, res) ->
+  res.sendfile "./interface/key-space.gif"
+app.get '/key-up.gif', (req, res) ->
+  res.sendfile "./interface/key-up.gif"
 
 # go through all events defined in the events.json
 engine = {}
@@ -29,12 +46,18 @@ class Context
     @action = ""
     @childs = []
 
+    io.on 'connection', (socket) =>
+      socket.on @name, (msg) =>
+        data = ["teemow"]
+        @run data
+
     app.get("/#{@name}", (req, res) =>
       data = JSON.parse(req.param 'data')
 
       @run data
       res.send "OK"
     )
+
 
     if @options.events
       Object.keys(@options.events).forEach (event) =>
@@ -122,7 +145,7 @@ class Context
   wait_for_container: (container) ->
 
 Object.keys(events).forEach (event) ->
-  context = new Context event, events[event]
+  new Context event, events[event]
 
-app.listen process.env.PORT || 5000
+http.listen process.env.PORT || 5000
 console.log "listening to #{process.env.PORT || 5000}"
