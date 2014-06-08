@@ -1,0 +1,15 @@
+{
+  "name": "docktris-controller",
+  "version": "0.0.1",
+  "description": "",
+  "author": "Timo Derstappen",
+  "dependencies": {
+    "coffee-script": "*",
+    "redis": "*",
+    "dockerode": "*",
+    "express": "*",
+    "async": "*",
+    "body-parser": "*",
+    "method-override": "*"
+  }
+}

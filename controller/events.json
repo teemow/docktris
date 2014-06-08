@@ -1,0 +1,12 @@
+{
+  "start": ["events", "block", "block-create"],
+  "left": ["piece-left"],
+  "right": ["piece-right"],
+  "down": ["piece-down"],
+  "rotate": ["piece-rotate"],
+
+  "block-created": ["link-block-to-piece"],
+  "piece-dropped": ["piece-delete", "piece-create"],
+  "line-full": ["line-remove"],
+  "timer": ["piece-down"]
+}
