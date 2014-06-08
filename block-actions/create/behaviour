@@ -5,8 +5,8 @@ PIECE_ID=$2
 COLOR=$3
 POSITION=$4
 
-redis-cli -h $BLOCK_PORT_6379_TCP_ADDR set color $COLOR
-redis-cli -h $BLOCK_PORT_6379_TCP_ADDR set position $POSITION
+redis-cli -h $STATE_PORT_6379_TCP_ADDR set color $COLOR
+redis-cli -h $STATE_PORT_6379_TCP_ADDR set position $POSITION
 
 #redis-cli -h $EVENTS_PORT_6379_TCP_ADDR publish docktris {"event":"block-created","data":{"block":"$BLOCK_ID","piece":"$PIECE_ID"}}
 

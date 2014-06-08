@@ -1,0 +1,10 @@
+{
+  "name": "docktris-reader",
+  "version": "0.0.1",
+  "description": "",
+  "author": "Timo Derstappen",
+  "dependencies": {
+    "coffee-script": "*",
+    "redis": "*"
+  }
+}

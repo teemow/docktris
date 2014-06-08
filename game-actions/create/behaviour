@@ -3,8 +3,8 @@
 GAME_ID=$1
 PLAYER=$2
 
-redis-cli -h $GAME_PORT_6379_TCP_ADDR set score 0
-redis-cli -h $GAME_PORT_6379_TCP_ADDR set player $PLAYER
+redis-cli -h $STATE_PORT_6379_TCP_ADDR set score 0
+redis-cli -h $STATE_PORT_6379_TCP_ADDR set player $PLAYER
 
 redis-cli -h $EVENTS_PORT_6379_TCP_ADDR publish docktris {\"event\":\"new-piece\",\"data\":[\"$GAME_ID\"]}
 

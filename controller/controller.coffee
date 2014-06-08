@@ -4,6 +4,9 @@ async = require "async"
 http = require "http"
 bodyParser = require "body-parser"
 redis = require "redis"
+util = require 'util'
+
+{EventEmitter} = require 'events'
 
 Docker = require "dockerode"
 docker = new Docker socketPath: '/var/run/docker.sock'
@@ -38,6 +41,11 @@ class Context
         @childs[event] = new Context event, @options.events[event]
 
   run: (data) ->
+
+    setInterval =>
+      @create_reader()
+    , 10000
+
     @create_channel () =>
       console.log "channel created"
 
@@ -50,7 +58,11 @@ class Context
 
         data.unshift @state
         @create_action data, () =>
-          console.log "done"
+          true
+
+  create_reader: () ->
+    @create_container "reader", {}, @links, () ->
+      true
 
   create_action: (data, cb) ->
     options = 
@@ -64,7 +76,7 @@ class Context
       cb()
 
     @create_container @options.context, {}, [], (err, container) =>
-      @links.push [container.Name.replace("/", ""), @options.context]
+      @links.push [container.Name.replace("/", ""), "state"]
       @state = container.Id
       cb()
 
@@ -75,24 +87,23 @@ class Context
 
       pubsub = redis.createClient 6379, container.NetworkSettings.IPAddress
       pubsub.on "error", (err) =>
-        console.log err
 
       pubsub.subscribe "docktris"
-      pubsub.on "message", (channel, message) =>
-        console.log message
-        msg = JSON.parse message
+      pubsub.on "message", (channel, msg) =>
+        if typeof msg isnt 'object'
+          msg = JSON.parse msg
 
-        @childs[msg.event].run msg.data, () =>
-          console.log "event done"
+        if msg.event is "read"
+          console.log @state, msg.data
+        else
+          @childs[msg.event].run msg.data
 
       pubsub.on "subscribe", () =>
         cb()
 
   create_container: (image, options, links, cb) ->
     options.Image = "teemow/docktris-#{image}"
-    console.log "start container #{options.Image}"
     docker.createContainer options, (err, container) =>
-      console.log "started"
       if err
         return console.log err
 
@@ -104,6 +115,11 @@ class Context
       container.start options, (err, data) =>
         container.inspect (err, data) =>
           cb(err, data) if cb
+
+          container.wait () ->
+            container.remove()
+
+  wait_for_container: (container) ->
 
 Object.keys(events).forEach (event) ->
   context = new Context event, events[event]

@@ -16,8 +16,8 @@ TYPE=$(((RANDOM % 7 ) + 1))
 
 # timer?
 
-redis-cli -h $PIECE_PORT_6379_TCP_ADDR set game $GAME
-redis-cli -h $PIECE_PORT_6379_TCP_ADDR set type $TYPE
+redis-cli -h $STATE_PORT_6379_TCP_ADDR set game $GAME
+redis-cli -h $STATE_PORT_6379_TCP_ADDR set type $TYPE
 
 redis-cli -h $EVENTS_PORT_6379_TCP_ADDR publish docktris {\"event\":\"new-block\",\"data\":\[\"$PIECE\",\"green\",\"0,3\"\]}
 redis-cli -h $EVENTS_PORT_6379_TCP_ADDR publish docktris {\"event\":\"new-block\",\"data\":\[\"$PIECE\",\"green\",\"0,4\"\]}
